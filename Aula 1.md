@@ -1,7 +1,7 @@
 # GBC 042 - Teoria dos grafos
 Professor Marcelo Keese Albertini (albertini@ufu.br)
 
-[Site da disciplina](www.facom.ufu.br/~albertini/grafos)
+[Site da disciplina](https://www.facom.ufu.br/~albertini/grafos/)
 
 * grafos & subgrafos
     - Defs
@@ -23,4 +23,7 @@ Professor Marcelo Keese Albertini (albertini@ufu.br)
 
 - big O notation
 - tipo abstrato de dados
+
+
+
 
