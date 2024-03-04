@@ -1,5 +1,6 @@
 class Grafo:
     def __init__(self, n):
+        # n: múmero de vértices
         self.grafo = [[] for _ in range(n)]
     
     def adiciona_aresta(self, u, v):
