@@ -54,22 +54,27 @@ class Graph:
         return visitedIndexes
 
 
-    def ToposortUtil(self,v,visited,stack):
+    def ToposortUtil(self,v,visited,stack, transposed):
         # Mark the current node as visited.
         visited[v] = True
  
         # Recur for all the vertices adjacent to this vertex
-        for neighbour in self.graph[v]:
+        for neighbour in transposed[v]:
             if visited[neighbour] == False:
-                self.topologicalSortUtil(neighbour,visited,stack)
+                self.ToposortUtil(neighbour,visited,stack, transposed)
  
         # Push current vertex to stack which stores result
         stack.insert(0,v)
 
-
+    def transpose(self):
+        transposed_graph = defaultdict(list)
+        for u in range(self.V):
+            for v in self.graph[u]:
+                transposed_graph[v].append(u)
+        return transposed_graph
 
     def Toposort(self):
-
+        transposed = self.transpose()
         #Create stack to store order
         visited = [False]*self.V
         stack = []
@@ -78,7 +83,9 @@ class Graph:
         # Sort starting from all vertices one by one
         for i in range(self.V):
             if visited[i] == False:
-                self.topologicalSortUtil(i,visited,stack)
+                self.ToposortUtil(i,visited,stack, transposed)
+                
+        return stack
 
 
 

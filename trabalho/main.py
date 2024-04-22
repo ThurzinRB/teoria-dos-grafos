@@ -90,5 +90,6 @@ prerequisites.save_dot_file('grafo.dot')
 print(canReceive(2, 10)) # [False, 'Não tem prerequisitos']
 print(canReceive(2, 8)) # [False, 'Não visitou dungeon que dropa item']
 print(canReceive(1, 1)) # [True, cidadão de bem]
-# print(canReceive(1, 1))
+
+print(prerequisites.Toposort())
 
