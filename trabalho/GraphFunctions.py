@@ -139,6 +139,17 @@ class Graph:
                    dist[v] > dist[u] + self.graph[u][v]):
                     dist[v] = dist[u] + self.graph[u][v]
                     
+    def isSorted(self, userList:list):
+        visited = []
+        transposed = self.transpose()
+        for v in userList:
+            visited.append(v)
+            for neighbor in transposed[v]:
+                if neighbor in visited:
+                    return False
+        return True
+    
+                  
     def save_dot_file(self, filename):
         with open(filename, 'w') as f:
             f.write("digraph G {\n")

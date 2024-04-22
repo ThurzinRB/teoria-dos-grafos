@@ -1,6 +1,15 @@
 from dbclasses import *
 from GraphFunctions import Graph
 
+def playerVisitedDungeos(playerId):
+    playerVisits = []
+    for visit in visits:
+        if visit.playerId == playerId:
+            playerVisits.append(visit.dungeonId)
+    
+    return playerVisits
+    
+
 def canReceive(playerId, itemId):
     #1 : olha se player já visitou dungeon que dropa 
     #2: olha se player pode estar naquela dungeon
@@ -12,9 +21,7 @@ def canReceive(playerId, itemId):
         if drop.itemId == itemId:
             itemDungeon.append(drop.dungeonId)
     #recolhe todas as dungeons que o player visitou
-    for visit in visits:
-        if visit.playerId == playerId:
-            playerVisits.append(visit.dungeonId)
+    playerVisits = playerVisitedDungeos(playerId)
             
     # caso o player não tenha visitado nenhuma dungeon que dropa aquele item ele é trapaceiro
     intersect = list(set(itemDungeon) & set(playerVisits)) #id das possíveis dungeons
@@ -75,6 +82,8 @@ playerHas = [PlayerHas(row[0], row[1]) for row in csv_data]
 file_path = 'trabalho/DB/Visits.grafos.csv'
 csv_data = read_csv_file(file_path)
 csv_data.pop(0)
+csv_data = sorted(csv_data, key= lambda x: int(x[2]))
+# print(*csv_data, sep='\n')
 visits = []
 visits = [Visits(row[0], row[1], row[2]) for row in csv_data]
 
@@ -90,6 +99,10 @@ readPrerequisites(prerequisites, 'trabalho/DB/Prerequisites.grafos.csv')
 print(canReceive(2, 10)) # [False, 'Não tem prerequisitos']
 print(canReceive(2, 8)) # [False, 'Não visitou dungeon que dropa item']
 print(canReceive(1, 1)) # [True, cidadão de bem]
-prerequisites.visualize()
+# prerequisites.visualize()
 print(prerequisites.Toposort())
+
+
+
+print(prerequisites.isSorted(playerVisitedDungeos(2)))
 
