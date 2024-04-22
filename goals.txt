@@ -1,4 +1,4 @@
-1 - Criar banco de dados em formato de grafo direcionado acíclico
-2 - Realizar um DFS no sentido contrário do grafo direcionado e conferir se todos os pre- requisitos necessários para o drop do item
+OK 1 - Criar banco de dados em formato de grafo direcionado acíclico
+OK 2 - Realizar um DFS no sentido contrário do grafo direcionado e conferir se todos os pre- requisitos necessários para o drop do item
 3 - Verificar se a ordem de visita das dungeons de um jogador é uma ordenação topológica válida
 4 - Utilizar o algoritmo de relaxamento para encontrar os menores e maiores valores de xp possíveis para projeto de novo conteúdo

@@ -18,21 +18,24 @@ class Graph:
 
     # Function to add an edge to graph
     def addEdge(self, u, v):
-        print('Adicionando ', u, ' ', v)
+        # print('Adicionando ', u, ' ', v)
         self.graph[u].append(v)
 
      
 
     # A function used by DFS
-    def DFSUtil(self, v, visited):
+    def DFSUtil(self, v, visited, visitedIndexes):
  
         # Mark the current node as visited
         visited[v] = True
+        visitedIndexes.append(v)
  
         # Recur for all the vertices adjacent to this vertex
-        for neighbour in range(self.V):
+        for neighbour in self.graph[v]:
             if visited[neighbour] == False:
-                self.DFSUtil(neighbour, visited)
+                self.DFSUtil(neighbour, visited, visitedIndexes)
+                
+    
  
 
      
@@ -42,11 +45,13 @@ class Graph:
  
         # Create a set to store visited vertices
         visited = [False]*self.V
+        visitedIndexes = []
  
         # Call the recursive helper function
         # to print DFS traversal
-        self.DFSUtil(v, visited)
-
+        self.DFSUtil(v, visited, visitedIndexes)
+        
+        return visitedIndexes
 
 
     def ToposortUtil(self,v,visited,stack):
@@ -121,10 +126,11 @@ class Graph:
                    dist[v] > dist[u] + self.graph[u][v]):
                     dist[v] = dist[u] + self.graph[u][v]
                     
-    def save_dot_file(self, filename = 'grafo.dot'):
+    def save_dot_file(self, filename):
         with open(filename, 'w') as f:
             f.write("digraph G {\n")
             for u in range(self.V):
+                f.write(f"  {u};\n")  # Write each vertex
                 for v in self.graph[u]:
-                    f.write(f"  {u} -> {v};\n")
+                    f.write(f"  {u} -> {v};\n")  # Write each edge
             f.write("}\n")
