@@ -84,7 +84,7 @@ prerequisites = Graph(len(dungeons))
 readPrerequisites(prerequisites, 'trabalho/DB/Prerequisites.grafos.csv')
 # print(prerequisites.graph[6])
 
-prerequisites.save_dot_file('grafo.dot')
+# prerequisites.save_dot_file('grafo.dot')
 
 # canReceive(1,1)
 print(canReceive(2, 10)) # [False, 'Não tem prerequisitos']

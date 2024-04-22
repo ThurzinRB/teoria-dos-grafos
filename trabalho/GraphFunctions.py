@@ -14,7 +14,7 @@ class Graph:
         # Default dictionary to store graph
         self.graph = defaultdict(list)
         self.V = vertices+1
-        self.view = graphviz.Digraph('view', filename='view')
+        self.view = graphviz.Digraph('view', filename='trabalho/view.dot')
         for v in range(self.V):
             self.view.node(str(v))
  
