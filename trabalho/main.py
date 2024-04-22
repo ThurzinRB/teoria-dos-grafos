@@ -104,5 +104,6 @@ print(prerequisites.Toposort())
 
 
 
+print(prerequisites.isSorted(playerVisitedDungeos(1)))
 print(prerequisites.isSorted(playerVisitedDungeos(2)))
 
