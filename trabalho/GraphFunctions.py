@@ -1,6 +1,7 @@
 # Python3 program to print DFS traversal
 # from a given graph
 from collections import defaultdict
+import graphviz
  
  
 # This class represents a directed graph using
@@ -13,14 +14,19 @@ class Graph:
         # Default dictionary to store graph
         self.graph = defaultdict(list)
         self.V = vertices+1
+        self.view = graphviz.Digraph('view', filename='view')
+        for v in range(self.V):
+            self.view.node(str(v))
  
      
 
     # Function to add an edge to graph
     def addEdge(self, u, v):
-        # print('Adicionando ', u, ' ', v)
+        self.view.edge(str(u), str(v))
         self.graph[u].append(v)
-
+        
+    def visualize(self):
+        self.view.view()
      
 
     # A function used by DFS
