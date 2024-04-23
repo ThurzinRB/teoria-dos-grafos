@@ -50,8 +50,9 @@ items = [Item(row[0], row[1]) for row in csv_data]
 file_path = 'trabalho/DB/Dungeons.grafos.csv'
 csv_data = read_csv_file(file_path)
 csv_data.pop(0)
+csv_data = sorted(csv_data, key=lambda x: int(x[1]))
 dungeons = []
-dungeons = [Dungeon(row[0], row[1]) for row in csv_data]
+dungeons = [Dungeon(row[0], row[1], 1) for row in csv_data]
 
 
 # Importa Drops
@@ -89,8 +90,10 @@ visits = [Visits(row[0], row[1], row[2]) for row in csv_data]
 
 
 #criação do grafo de pré requisitos
-prerequisites = Graph(len(dungeons))
+prerequisites = Graph(len(dungeons),'prerequisites')
 readPrerequisites(prerequisites, 'trabalho/DB/Prerequisites.grafos.csv')
+paths = Graph(len(dungeons), 'paths')
+readPath(paths, 'trabalho/DB/Paths.grafos.csv')
 # print(prerequisites.graph[6])
 
 # prerequisites.save_dot_file('grafo.dot')
@@ -100,10 +103,15 @@ print(canReceive(2, 10)) # [False, 'Não tem prerequisitos']
 print(canReceive(2, 8)) # [False, 'Não visitou dungeon que dropa item']
 print(canReceive(1, 1)) # [True, cidadão de bem]
 # prerequisites.visualize()
-print(prerequisites.Toposort())
+# paths.visualize()
+# print(prerequisites.Toposort())
 
 
 
-print(prerequisites.isSorted(playerVisitedDungeos(1)))
-print(prerequisites.isSorted(playerVisitedDungeos(2)))
+print(prerequisites.isSorted(playerVisitedDungeos(1))) # True
+print(prerequisites.isSorted(playerVisitedDungeos(2))) # False
+
+print(paths.Dijkstra(1))
+
+
 

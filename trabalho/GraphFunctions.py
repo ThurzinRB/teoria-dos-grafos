@@ -9,21 +9,21 @@ import graphviz
 class Graph:
  
     # Constructor
-    def __init__(self, vertices):
+    def __init__(self, vertices, name='view'):
  
         # Default dictionary to store graph
         self.graph = defaultdict(list)
         self.V = vertices+1
-        self.view = graphviz.Digraph('view', filename='trabalho/view.dot')
+        self.view = graphviz.Digraph(name, filename='trabalho/'+name+'.dot')
         for v in range(self.V):
             self.view.node(str(v))
  
      
 
     # Function to add an edge to graph
-    def addEdge(self, u, v):
-        self.view.edge(str(u), str(v))
-        self.graph[u].append(v)
+    def addEdge(self, u, v, xp = 1):
+        self.view.edge(str(u), str(v), label=str(xp))
+        self.graph[u].append([v, xp])
         
     def visualize(self):
         self.view.view()
@@ -38,8 +38,8 @@ class Graph:
  
         # Recur for all the vertices adjacent to this vertex
         for neighbour in self.graph[v]:
-            if visited[neighbour] == False:
-                self.DFSUtil(neighbour, visited, visitedIndexes)
+            if visited[neighbour[0]] == False:
+                self.DFSUtil(neighbour[0], visited, visitedIndexes)
                 
     
  
@@ -66,8 +66,8 @@ class Graph:
  
         # Recur for all the vertices adjacent to this vertex
         for neighbour in transposed[v]:
-            if visited[neighbour] == False:
-                self.ToposortUtil(neighbour,visited,stack, transposed)
+            if visited[neighbour[0]] == False:
+                self.ToposortUtil(neighbour[0],visited,stack, transposed)
  
         # Push current vertex to stack which stores result
         stack.insert(0,v)
@@ -76,7 +76,7 @@ class Graph:
         transposed_graph = defaultdict(list)
         for u in range(self.V):
             for v in self.graph[u]:
-                transposed_graph[v].append(u)
+                transposed_graph[v[0]].append(u)
         return transposed_graph
 
     def Toposort(self):
@@ -112,6 +112,14 @@ class Graph:
  
         return min_index
 
+    def getDist(self, u, v):
+        dist = self.graph[u]
+        dist = [pair[1] for pair in dist if pair[0] == v]
+        if dist:
+            return dist[0]
+        else:
+            return 1e7
+    
     def Dijkstra(self, src):
         
         dist = [1e7] * self.V
@@ -134,10 +142,12 @@ class Graph:
             # distance is greater than new distance and
             # the vertex in not in the shortest path tree
             for v in range(self.V):
-                if (self.graph[u][v] > 0 and
-                   sptSet[v] == False and
-                   dist[v] > dist[u] + self.graph[u][v]):
-                    dist[v] = dist[u] + self.graph[u][v]
+                if (self.getDist(u, v) > 0 and
+                    sptSet[v] == False and
+                    dist[v] > dist[u] + self.getDist(u, v)):
+                    dist[v] = dist[u] + self.getDist(u, v)
+            
+            return dist
                     
     def isSorted(self, userList:list):
         visited = []

@@ -18,9 +18,10 @@ class PlayerHas:
         self.itemId = int(ItemId)
 
 class Dungeon:
-    def __init__(self, DungeonName, DungeonId):
+    def __init__(self, DungeonName, DungeonId, DungeonXP):
         self.name = DungeonName
         self.id = int(DungeonId)
+        self.xp = int(DungeonXP)
 
 class Item:
     def __init__(self, itemName, itemId):
@@ -52,4 +53,16 @@ def readPrerequisites(grafo: Graph, path):
             for edge in edges:
                 # print(row[0], edge)
                 grafo.addEdge(int(row[0]), edge)
+
+def readPath(grafo: Graph, path):
+    data = read_csv_file(path)
+    data.pop(0)
+    for row in data:
+        # print(' ')
+        # print(row)
+        if len(row[1])> 0:
+            edges = row[1].split('-')
+            for edge in edges:
+                # print(row[0], edge)
+                grafo.addEdge(int(row[0]), int(edge), int(row[2]))
     
