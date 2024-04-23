@@ -121,6 +121,10 @@ class Graph:
         else:
             return 1e7
     
+    def biggestPath(self, src:int):
+        oposite = []
+        oposite = [[i[0], -i[1]] for i in self.graph]
+    
     def shortestPath(self, src: int):
         # Create a priority queue to store vertices that
         # are being preprocessed
