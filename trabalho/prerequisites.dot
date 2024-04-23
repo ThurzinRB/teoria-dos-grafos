@@ -1,4 +1,4 @@
-digraph view {
+digraph prerequisites {
 	0
 	1
 	2

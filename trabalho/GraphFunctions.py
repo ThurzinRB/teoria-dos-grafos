@@ -2,6 +2,7 @@
 # from a given graph
 from collections import defaultdict
 import graphviz
+import heapq
  
  
 # This class represents a directed graph using
@@ -9,21 +10,21 @@ import graphviz
 class Graph:
  
     # Constructor
-    def __init__(self, vertices):
+    def __init__(self, vertices, name='view'):
  
         # Default dictionary to store graph
         self.graph = defaultdict(list)
         self.V = vertices+1
-        self.view = graphviz.Digraph('view', filename='trabalho/view.dot')
+        self.view = graphviz.Digraph(name, filename='trabalho/'+name+'.dot')
         for v in range(self.V):
             self.view.node(str(v))
  
      
 
     # Function to add an edge to graph
-    def addEdge(self, u, v):
-        self.view.edge(str(u), str(v))
-        self.graph[u].append(v)
+    def addEdge(self, u, v, xp = 1):
+        self.view.edge(str(u), str(v), label=str(xp))
+        self.graph[u].append([v, xp])
         
     def visualize(self):
         self.view.view()
@@ -38,8 +39,8 @@ class Graph:
  
         # Recur for all the vertices adjacent to this vertex
         for neighbour in self.graph[v]:
-            if visited[neighbour] == False:
-                self.DFSUtil(neighbour, visited, visitedIndexes)
+            if visited[neighbour[0]] == False:
+                self.DFSUtil(neighbour[0], visited, visitedIndexes)
                 
     
  
@@ -66,8 +67,8 @@ class Graph:
  
         # Recur for all the vertices adjacent to this vertex
         for neighbour in transposed[v]:
-            if visited[neighbour] == False:
-                self.ToposortUtil(neighbour,visited,stack, transposed)
+            if visited[neighbour[0]] == False:
+                self.ToposortUtil(neighbour[0],visited,stack, transposed)
  
         # Push current vertex to stack which stores result
         stack.insert(0,v)
@@ -76,7 +77,7 @@ class Graph:
         transposed_graph = defaultdict(list)
         for u in range(self.V):
             for v in self.graph[u]:
-                transposed_graph[v].append(u)
+                transposed_graph[v[0]].append(u)
         return transposed_graph
 
     def Toposort(self):
@@ -112,32 +113,40 @@ class Graph:
  
         return min_index
 
-    def Dijkstra(self, src):
-        
-        dist = [1e7] * self.V
+    def getDist(self, u, v):
+        dist = self.graph[u]
+        dist = [pair[1] for pair in dist if pair[0] == v]
+        if dist:
+            return dist[0]
+        else:
+            return 1e7
+    
+    def shortestPath(self, src: int):
+        # Create a priority queue to store vertices that
+        # are being preprocessed
+        pq = []
+        heapq.heappush(pq, (0, src))
+ 
+        # Create a vector for distances and initialize all
+        # distances as infinite (INF)
+        dist = [float('inf')] * self.V
         dist[src] = 0
-        sptSet = [False] * self.V
  
-        for cout in range(self.V):
+        while pq:
+            # The first vertex in pair is the minimum distance
+            # vertex, extract it from priority queue.
+            # vertex label is stored in second of pair
+            d, u = heapq.heappop(pq)
  
-            # Pick the minimum distance vertex from
-            # the set of vertices not yet processed.
-            # u is always equal to src in first iteration
-            u = self.minDistance(dist, sptSet)
- 
-            # Put the minimum distance vertex in the
-            # shortest path tree
-            sptSet[u] = True
- 
-            # Update dist value of the adjacent vertices
-            # of the picked vertex only if the current
-            # distance is greater than new distance and
-            # the vertex in not in the shortest path tree
-            for v in range(self.V):
-                if (self.graph[u][v] > 0 and
-                   sptSet[v] == False and
-                   dist[v] > dist[u] + self.graph[u][v]):
-                    dist[v] = dist[u] + self.graph[u][v]
+            # 'i' is used to get all adjacent vertices of a
+            # vertex
+            for v, weight in self.graph[u]:
+                # If there is shorted path to v through u.
+                if dist[v] > dist[u] + weight:
+                    # Updating distance of v
+                    dist[v] = dist[u] + weight
+                    heapq.heappush(pq, (dist[v], v))
+        return dist
                     
     def isSorted(self, userList:list):
         visited = []
