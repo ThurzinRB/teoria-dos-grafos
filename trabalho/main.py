@@ -102,8 +102,8 @@ readPath(paths, 'trabalho/DB/Paths.grafos.csv')
 print(canReceive(2, 10)) # [False, 'Não tem prerequisitos']
 print(canReceive(2, 8)) # [False, 'Não visitou dungeon que dropa item']
 print(canReceive(1, 1)) # [True, cidadão de bem]
-# prerequisites.visualize()
-# paths.visualize()
+prerequisites.visualize()
+paths.visualize()
 # print(prerequisites.Toposort())
 
 
