@@ -111,7 +111,7 @@ print(canReceive(1, 1)) # [True, cidadão de bem]
 print(prerequisites.isSorted(playerVisitedDungeos(1))) # True
 print(prerequisites.isSorted(playerVisitedDungeos(2))) # False
 
-print(paths.Dijkstra(1))
+print(paths.shortestPath(1))
 
 
 

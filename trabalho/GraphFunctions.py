@@ -2,6 +2,7 @@
 # from a given graph
 from collections import defaultdict
 import graphviz
+import heapq
  
  
 # This class represents a directed graph using
@@ -120,34 +121,32 @@ class Graph:
         else:
             return 1e7
     
-    def Dijkstra(self, src):
-        
-        dist = [1e7] * self.V
+    def shortestPath(self, src: int):
+        # Create a priority queue to store vertices that
+        # are being preprocessed
+        pq = []
+        heapq.heappush(pq, (0, src))
+ 
+        # Create a vector for distances and initialize all
+        # distances as infinite (INF)
+        dist = [float('inf')] * self.V
         dist[src] = 0
-        sptSet = [False] * self.V
  
-        for cout in range(self.V):
+        while pq:
+            # The first vertex in pair is the minimum distance
+            # vertex, extract it from priority queue.
+            # vertex label is stored in second of pair
+            d, u = heapq.heappop(pq)
  
-            # Pick the minimum distance vertex from
-            # the set of vertices not yet processed.
-            # u is always equal to src in first iteration
-            u = self.minDistance(dist, sptSet)
- 
-            # Put the minimum distance vertex in the
-            # shortest path tree
-            sptSet[u] = True
- 
-            # Update dist value of the adjacent vertices
-            # of the picked vertex only if the current
-            # distance is greater than new distance and
-            # the vertex in not in the shortest path tree
-            for v in range(self.V):
-                if (self.getDist(u, v) > 0 and
-                    sptSet[v] == False and
-                    dist[v] > dist[u] + self.getDist(u, v)):
-                    dist[v] = dist[u] + self.getDist(u, v)
-            
-            return dist
+            # 'i' is used to get all adjacent vertices of a
+            # vertex
+            for v, weight in self.graph[u]:
+                # If there is shorted path to v through u.
+                if dist[v] > dist[u] + weight:
+                    # Updating distance of v
+                    dist[v] = dist[u] + weight
+                    heapq.heappush(pq, (dist[v], v))
+        return dist
                     
     def isSorted(self, userList:list):
         visited = []
